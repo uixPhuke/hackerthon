@@ -66,9 +66,8 @@ const userSlice = createSlice({
     deleteUserFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;
-    },
-   
-  },
+    }
+}
 });
 
 export const {
