@@ -1,21 +1,30 @@
-// src/components/AdminDashboard.jsx
-import { useState } from 'react';
+// src/components/Dashboard.jsx
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-function AdminDashboard() {
+export default function Dashboard() {
+  const location = useLocation();
+  const [tab, setTab] = useState("dashboard");
   const [file, setFile] = useState(null);
   const [error, setError] = useState(null);
 
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const tabFromUrl = urlParams.get("tab");
+    if (tabFromUrl) {
+      setTab(tabFromUrl);
+    }
+  }, [location.search]);
+
   const handleFileUpload = (e) => {
     const uploadedFile = e.target.files[0];
-
     if (uploadedFile && (uploadedFile.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || uploadedFile.type === 'text/csv')) {
       setFile(uploadedFile);
       setError(null);
-      console.log('Uploaded file:', uploadedFile);
     } else {
       setError("Please upload a valid Excel (.xlsx) or CSV file.");
       setFile(null);
@@ -24,11 +33,11 @@ function AdminDashboard() {
 
   // Sample chart data
   const chartData = {
-    labels: ['Plumber', 'Electrician', 'Carpenter', 'Painter'],
+    labels: ['Profile', 'Posts', 'Users', 'Comments'],
     datasets: [
       {
-        label: 'Average Ratings',
-        data: [4.2, 4.8, 3.6, 4.5], // Example ratings
+        label: 'Engagement Level',
+        data: [4.2, 5.0, 3.8, 4.5], // Example data points
         backgroundColor: 'rgba(54, 162, 235, 0.7)',
         borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 1,
@@ -44,19 +53,34 @@ function AdminDashboard() {
       },
       title: {
         display: true,
-        text: 'Service Provider Ratings',
+        text: 'User Engagement Across Tabs',
       },
     },
   };
 
+  const renderTabContent = () => {
+    switch (tab) {
+      case "profile":
+        return <p>Profile Component Loaded</p>;
+      case "posts":
+        return <p>Posts Component Loaded</p>;
+      case "users":
+        return <p>Users Component Loaded</p>;
+      case "comments":
+        return <p>Comments Component Loaded</p>;
+      default:
+        return <p>Dashboard Overview Component Loaded</p>;
+    }
+  };
+
   return (
-    <div className="admin-dashboard min-h-screen bg-gray-100">
+    <div className="dashboard min-h-screen bg-gray-100">
       <Navbar />
-      <div className="container mx-auto p-4 md:p-6">
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6">Admin Dashboard</h2>
+      <div className="container mx-auto p-6">
+        <h2 className="text-3xl font-bold text-gray-800 mb-6">Admin Dashboard</h2>
         
         {/* Bulk Upload Section */}
-        <div className="bulk-upload bg-white shadow-md rounded-lg p-4 md:p-6 mb-8">
+        <div className="bulk-upload bg-white shadow-md rounded-lg p-6 mb-8">
           <label htmlFor="upload" className="block text-lg font-semibold mb-2">Bulk Upload Providers</label>
           <input
             type="file"
@@ -70,9 +94,14 @@ function AdminDashboard() {
         </div>
 
         {/* Ratings Chart */}
-        <div className="bg-white shadow-md rounded-lg p-4 md:p-6">
+        <div className="bg-white shadow-md rounded-lg p-6">
           <h3 className="text-lg font-semibold mb-4">Service Ratings</h3>
           <Bar data={chartData} options={chartOptions} />
+        </div>
+
+        {/* Dynamic Tab Content */}
+        <div className="bg-white shadow-md rounded-lg p-6">
+          {renderTabContent()}
         </div>
       </div>
     </div>
@@ -83,11 +112,9 @@ function AdminDashboard() {
 function Navbar() {
   return (
     <nav className="bg-blue-600 text-white shadow-md">
-      <div className="container mx-auto flex flex-col md:flex-row justify-between items-center p-4">
+      <div className="container mx-auto flex justify-between items-center p-4">
         <div className="text-2xl font-bold">SmartServe Admin</div>
-        {/* <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-6 mt-2 md:mt-0"> */}
-        <div className="flex flex-wrap space-x-4 mt-2">
-
+        <div className="flex space-x-6">
           <a href="/" className="hover:text-blue-200">Dashboard</a>
           <a href="/admin" className="hover:text-blue-200">Manage Providers</a>
           <a href="/reports" className="hover:text-blue-200">Reports</a>
@@ -96,5 +123,3 @@ function Navbar() {
     </nav>
   );
 }
-
-export default AdminDashboard;
