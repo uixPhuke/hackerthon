@@ -1,6 +1,7 @@
-const User = require("../models/userSchema");
+const User = require("../model/userSchema");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+
 
 const userCtrl = {
   // Register a new user
@@ -8,8 +9,11 @@ const userCtrl = {
     try {
       const {
         username,
+       firstName,   // New field
+        lastName,     // New field
         email,
         password,
+        phone, 
         role,
         profileImage,
         bio,
@@ -32,6 +36,9 @@ const userCtrl = {
 
       const newUser = new User({
         username,
+        firstName,   // New field
+        lastName,     // New field
+        phone, 
         email,
         password: hashedPassword,
         role,
@@ -55,8 +62,12 @@ const userCtrl = {
       const userData = {
         _id: newUser._id,
         username: newUser.username,
+               
+        firstName: newUser.firstName,   // Include new field
+                lastName: newUser.lastName ,      // Include new field
         email: newUser.email,
         role: newUser.role,
+        phone: newUser.phone,   
         profileImage: newUser.profileImage,
         bio: newUser.bio,
         address: newUser.address, // Include address in user data
@@ -306,6 +317,94 @@ const userCtrl = {
       res.status(500).json({ message: "Error during Google Sign-In", error });
     }
   },
+  // Google Sign-In
+  signInGoogle: async (req, res) => {
+    const { email, name, googlePhotoUrl } = req.body;
+    try {
+      // Check if the service provider already exists
+      const provider = await ServiceProvider.findOne({ email });
+
+      if (provider) {
+        // Provider exists, generate access token
+        const accesstoken = createAccessToken({ id: provider._id });
+        const refreshtoken = createRefreshToken({ id: provider._id });
+
+        // Set refresh token in cookie
+        res.cookie("refreshtoken", refreshtoken, {
+          httpOnly: true,
+          path: "/provider/refresh_token",
+          maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+          sameSite: "None", // For cross-origin requests
+          secure: true,
+        });
+
+        const providerData = {
+          _id: provider._id,
+          firstName: provider.firstName,
+          lastName: provider.lastName,
+          email: provider.email,
+          contactInfo: provider.contactInfo,
+          availability: provider.availability,
+          ratings: provider.ratings,
+          servicesOffered: provider.servicesOffered,
+          profileImage: provider.profileImage,
+        };
+
+        res.json({ accesstoken, provider: providerData });
+      } else {
+        // New provider registration
+        const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
+        const hashedPassword = await bcrypt.hash(generatedPassword, 12);
+
+        // Create new provider with Google profile information
+        const newProvider = new ServiceProvider({
+          firstName: name.split(" ")[0],
+          lastName: name.split(" ")[1] || "",
+          email,
+          password: hashedPassword,
+          profileImage: googlePhotoUrl,
+          contactInfo: "", // Initialize contactInfo if needed
+          availability: [], // Initialize availability if needed
+          servicesOffered: [], // Initialize servicesOffered if needed
+          serviceArea: {
+            type: "Point",
+            coordinates: [0, 0], // Set default coordinates
+          },
+        });
+
+        await newProvider.save();
+
+        // Generate access token for the new provider
+        const accesstoken = createAccessToken({ id: newProvider._id });
+        const refreshtoken = createRefreshToken({ id: newProvider._id });
+
+        // Set refresh token in cookie
+        res.cookie("refreshtoken", refreshtoken, {
+          httpOnly: true,
+          path: "/provider/refresh_token",
+          maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+          sameSite: "None", // For cross-origin requests
+          secure: true,
+        });
+
+        const providerData = {
+          _id: newProvider._id,
+          firstName: newProvider.firstName,
+          lastName: newProvider.lastName,
+          email: newProvider.email,
+          contactInfo: newProvider.contactInfo,
+          availability: newProvider.availability,
+          ratings: newProvider.ratings,
+          servicesOffered: newProvider.servicesOffered,
+          profileImage: newProvider.profileImage,
+        };
+
+        res.json({ accesstoken, provider: providerData });
+      }
+    } catch (error) {
+      res.status(500).json({ message: "Error during Google Sign-In", error });
+    }
+}
 };
 
 const createAccessToken = (user) => {

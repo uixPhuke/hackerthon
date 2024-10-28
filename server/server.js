@@ -2,6 +2,8 @@ const express=require('express')
 const app=express()
 const cookieParser = require("cookie-parser");
 const userRouter = require("./router/userRouter");
+const serviceProviderRouter = require("./router/serviceProviderRouter");
+const reviewRouter=require('./router/reviewRouter')
 require('dotenv').config()
 const connectDB=require('./db')
 
@@ -19,6 +21,9 @@ app.use(cookieParser());
 
 // Use user routes
 app.use("/user", userRouter);
+app.use("/provider", serviceProviderRouter);
+app.use("/reviews", reviewRouter);
+
 
 //PORT
 const PORT=process.env.PORT 
