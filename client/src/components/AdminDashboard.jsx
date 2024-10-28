@@ -113,6 +113,7 @@ export default function Dashboard() {
 // Navbar Component
 // Navbar Component
 // Navbar Component
+
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -121,7 +122,7 @@ function Navbar() {
   };
 
   return (
-    <nav className="bg-blue-600 text-white shadow-md fixed w-full z-10 top-0">
+    <nav className="bg-neutral-900 text-white shadow-md fixed w-full z-10 top-0">
       <div className="container mx-auto flex items-center p-4">
         <div className="text-2xl font-bold mr-4">SmartServe Admin</div>
         
@@ -143,27 +144,25 @@ function Navbar() {
         </div>
       </div>
 
-      {/* Slide-in Mobile Menu */}
+      {/* Slide-in Mobile Menu from the Right */}
       <div
-        className={`fixed top-0 right-0 h-full bg-blue-600 text-white w-2/3 transform ${
+        className={`absolute top-full right-0 w-2/3 bg-green-600 text-white transition-transform duration-300 ease-in-out ${
           menuOpen ? "translate-x-0" : "translate-x-full"
-        } transition-transform duration-300 ease-in-out z-20`}
+        } z-10`}
       >
-        <button
-          onClick={toggleMenu}
-          className="absolute top-4 right-4 text-white text-2xl font-bold"
-        >
-          &times;
-        </button>
-        <div className="flex flex-col items-start mt-16 space-y-4 p-4">
-          <a href="/" className="hover:text-blue-200 text-lg">Dashboard</a>
-          <a href="/admin" className="hover:text-blue-200 text-lg">Manage Providers</a>
-          <a href="/reports" className="hover:text-blue-200 text-lg">Reports</a>
+        <div className="flex flex-col items-start p-4 space-y-4">
+          <button onClick={toggleMenu} className="text-white text-2xl font-bold self-end">
+            &times;
+          </button>
+          <a href="/" className="hover:text-green-200 text-lg">Dashboard</a>
+          <a href="/admin" className="hover:text-green-200 text-lg">Manage Providers</a>
+          <a href="/reports" className="hover:text-green-200 text-lg">Reports</a>
         </div>
       </div>
     </nav>
   );
 }
+
 
 
 
