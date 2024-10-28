@@ -52,11 +52,11 @@ function AdminDashboard() {
   return (
     <div className="admin-dashboard min-h-screen bg-gray-100">
       <Navbar />
-      <div className="container mx-auto p-6">
-        <h2 className="text-3xl font-bold text-gray-800 mb-6">Admin Dashboard</h2>
+      <div className="container mx-auto p-4 md:p-6">
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6">Admin Dashboard</h2>
         
         {/* Bulk Upload Section */}
-        <div className="bulk-upload bg-white shadow-md rounded-lg p-6 mb-8">
+        <div className="bulk-upload bg-white shadow-md rounded-lg p-4 md:p-6 mb-8">
           <label htmlFor="upload" className="block text-lg font-semibold mb-2">Bulk Upload Providers</label>
           <input
             type="file"
@@ -70,7 +70,7 @@ function AdminDashboard() {
         </div>
 
         {/* Ratings Chart */}
-        <div className="bg-white shadow-md rounded-lg p-6">
+        <div className="bg-white shadow-md rounded-lg p-4 md:p-6">
           <h3 className="text-lg font-semibold mb-4">Service Ratings</h3>
           <Bar data={chartData} options={chartOptions} />
         </div>
@@ -83,9 +83,11 @@ function AdminDashboard() {
 function Navbar() {
   return (
     <nav className="bg-blue-600 text-white shadow-md">
-      <div className="container mx-auto flex justify-between items-center p-4">
+      <div className="container mx-auto flex flex-col md:flex-row justify-between items-center p-4">
         <div className="text-2xl font-bold">SmartServe Admin</div>
-        <div className="flex space-x-6">
+        {/* <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-6 mt-2 md:mt-0"> */}
+        <div className="flex flex-wrap space-x-4 mt-2">
+
           <a href="/" className="hover:text-blue-200">Dashboard</a>
           <a href="/admin" className="hover:text-blue-200">Manage Providers</a>
           <a href="/reports" className="hover:text-blue-200">Reports</a>
