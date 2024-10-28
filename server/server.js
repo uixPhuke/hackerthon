@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const userRouter = require("./router/userRouter");
 const serviceProviderRouter = require("./router/serviceProviderRouter");
 const reviewRouter=require('./router/reviewRouter')
+const bookingRouter=require('./router/bookingRouter')
 require('dotenv').config()
 const connectDB=require('./db')
 
@@ -23,6 +24,7 @@ app.use(cookieParser());
 app.use("/user", userRouter);
 app.use("/provider", serviceProviderRouter);
 app.use("/reviews", reviewRouter);
+app.use("/booking", reviewRouter);
 
 
 //PORT
