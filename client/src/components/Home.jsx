@@ -15,16 +15,17 @@ const ServiceList = ({ searchTerm }) => {
   );
 
   return (
-    <div className="services mt-4 grid grid-cols-2 gap-4">
+    <div className="services mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {filteredServices.length > 0 ? (
         filteredServices.map((service, index) => (
-          <div key={index} className="service-card border p-4 rounded">
-            <h2 className="font-semibold">{service.name}</h2>
-            <p>Available in {service.area}, Ratings: {service.rating}</p>
+          <div key={index} className="service-card border border-gray-200 rounded-lg shadow-lg p-4 transition-transform transform hover:scale-105">
+            <h2 className="font-semibold text-lg text-blue-600">{service.name}</h2>
+            <p className="text-gray-600">Available in <span className="font-medium">{service.area}</span></p>
+            <p className="text-yellow-500">Ratings: {service.rating}</p>
           </div>
         ))
       ) : (
-        <p>No services found.</p>
+        <p className="text-red-500">No services found.</p>
       )}
     </div>
   );
@@ -43,16 +44,18 @@ function Home() {
   };
 
   return (
-    <div className="home p-4">
-      <h1 className="text-2xl font-bold">SmartServe Service Directory</h1>
-      <input
-        type="text"
-        placeholder="Search services..."
-        value={searchTerm}
-        onChange={handleSearch}
-        className="p-2 border border-gray-300 rounded mt-4 w-full"
-      />
-      <Suspense fallback={<div>Loading Services...</div>}>
+    <div className="home p-6 bg-gray-50 min-h-screen">
+      <h1 className="text-3xl font-bold text-center text-gray-800 mb-4">Civvia Directory</h1>
+      <div className="flex justify-center mb-6">
+        <input
+          type="text"
+          placeholder="Search services..."
+          value={searchTerm}
+          onChange={handleSearch}
+          className="p-3 border border-gray-300 rounded-lg shadow-md w-full max-w-md"
+        />
+      </div>
+      <Suspense fallback={<div className="text-center">Loading Services...</div>}>
         <ServiceList searchTerm={searchTerm} />
       </Suspense>
     </div>
