@@ -22,7 +22,7 @@ const locationSchema = new Schema({
     lastName: { type: String, },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    phone: { type: String,default:""},
+    phone: { type: String},
     role: {
       type: String,
       enum: ["admin", "user","service"],
