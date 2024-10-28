@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import axios from "axios";
 import Popup from "../components/mainpages/utils/PopUps/Popup";
 import { API_URL } from "../Config";
@@ -26,12 +26,12 @@ const UserAPI = (token) => {
     const getUser = async () => {
       if (token) {
         try {
-          const res = await axios.get(`${API_URL}/user/infor`, {
+          const res = await axios.get(`${API_URL}/user/`, {
             headers: { Authorization: token },
           });
           setIsLogged(true);
-          res.data.role === 1 ? setIsAdmin(true) : setIsAdmin(false);
-          if (res.data.role === 1) {
+          res.data.role === "admin" ? setIsAdmin(true) : setIsAdmin(false);
+          if (res.data.role ==="admin") {
             getAllUser();
           }
           setUserProfile(res.data);

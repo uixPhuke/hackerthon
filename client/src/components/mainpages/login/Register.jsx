@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa"; // Import icons
 import { API_URL } from "../../../Config";
+
 const Register = () => {
   const [user, setUser] = useState({
-    name: "",
+    username: "",
     email: "",
     password: "",
   });
@@ -73,10 +74,10 @@ const [modalContent, setModalContent] = useState(""); // State for modal content
               <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
               <input
                 type="text"
-                name="name"
+                name="username"
                 required
                 placeholder="Name"
-                value={user.name}
+                value={user.username}
                 onChange={onChangeInput}
                 className="w-full pl-10 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500"
               />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa"; // Import icons
@@ -111,7 +111,7 @@ setTimeout(() => {
             </button>
 
             <p className="text-center mt-4 text-gray-600">
-              Don't have an account?{" "}
+              Don,t have an account?{" "}
               <Link
                 to="/register"
                 className="text-gray-400 font-bold hover:underline hover:text-black"

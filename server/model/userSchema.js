@@ -2,27 +2,27 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const addressSchema = new Schema({
-  street: { type: String, required: true },
-  city: { type: String, required: true },
-  state: { type: String, required: true },
-  zipCode: { type: String, required: true },
-  country: { type: String, required: true },
+  street: { type: String },
+  city: { type: String },
+  state: { type: String },
+  zipCode: { type: String},
+  country: { type: String },
 });
 
 // Add location schema for geospatial queries
 const locationSchema = new Schema({
   type: { type: String, enum: ['Point'], default: 'Point' },
-  coordinates: { type: [Number], required: true } // [longitude, latitude]
+  coordinates: { type: [Number],  } // [longitude, latitude]
 });
 
 
   const userSchema = new Schema({
     username: { type: String, required: true, unique: true },
-    firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
+    firstName: { type: String,  },
+    lastName: { type: String, },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    phone: { type: String, required: true, unique: true },
+    phone: { type: String,default:""},
     role: {
       type: String,
       enum: ["admin", "user","service"],
