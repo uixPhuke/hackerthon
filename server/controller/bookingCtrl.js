@@ -62,7 +62,7 @@ const bookingCtrl = {
       );
 
       if (!updatedBooking) {
-        return res.status(404).json({ message: "Booking not found" });
+        return res.status(404).json({ message: "Booking not found.. try again" });
       }
 
       res.status(200).json({ success: true, updatedBooking });
